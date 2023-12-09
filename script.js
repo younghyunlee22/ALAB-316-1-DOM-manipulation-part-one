@@ -40,12 +40,15 @@ var menuLinks = [
   },
 ];
 
+// Append anchor tag to each menu in nav
 menuLinks.forEach((ele) => {
   let menu = document.createElement("a");
   menu.setAttribute("href", ele.href);
   menu.innerHTML = ele.text;
   topMenuEl.append(menu);
 });
+
+console.log("topMenuEl", topMenuEl);
 
 const subMenuEl = document.getElementById("sub-menu");
 subMenuEl.style.height = "100%";
@@ -54,21 +57,36 @@ subMenuEl.classList.add("flex-around");
 subMenuEl.style.position = "absolute";
 subMenuEl.style.top = "0";
 
-let topMenuLinks = topMenuEl.querySelectorAll("a");
+let topMenuLinks = topMenuEl.querySelectorAll("a"); // data type: NodeList
+console.log("topMenuLinks", topMenuLinks);
+
+// delegating click event listener
 topMenuEl.addEventListener("click", function (e) {
   e.preventDefault();
   console.log(e.target.textContent);
+
   if (e.target.tagName !== "A") {
     return console.log("Invalid element");
-  } else {
-    e.target.classList.toggle("active");
-    console.log("target", e.target);
+  }
 
-    for (const link of topMenuLinks) {
-      if (link !== e.target) {
-        link.classList.remove("active");
-        console.log("other menus", link);
-      }
+  for (const link of topMenuLinks) {
+    if (link !== e.target) {
+      link.classList.remove("active");
+      console.log("other menus", link);
     }
+  }
+
+  e.target.classList.toggle("active");
+  console.log("target", e.target);
+
+  // Find the clicked <a> element's "link" object within menuLinks
+  const linkObj = menuLinks.find((link) => link.text === e.target.textContent);
+
+  const isActive = e.target.classList.contains("active");
+
+  if (linkObj && isActive && linkObj.subLinks) {
+    subMenuEl.style.top = "100%";
+  } else {
+    subMenuEl.style.top = "0";
   }
 });
