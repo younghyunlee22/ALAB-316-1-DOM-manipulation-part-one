@@ -56,7 +56,7 @@ subMenuEl.style.backgroundColor = "var(--sub-menu-bg)";
 subMenuEl.classList.add("flex-around");
 subMenuEl.style.position = "absolute";
 subMenuEl.style.top = "0";
-
+console.log(subMenuEl);
 let topMenuLinks = topMenuEl.querySelectorAll("a"); // data type: NodeList
 console.log("topMenuLinks", topMenuLinks);
 
@@ -86,7 +86,18 @@ topMenuEl.addEventListener("click", function (e) {
 
   if (linkObj && isActive && linkObj.subLinks) {
     subMenuEl.style.top = "100%";
+    buildSubmenu(linkObj.subLinks);
   } else {
     subMenuEl.style.top = "0";
   }
 });
+
+function buildSubmenu(sublinkArr) {
+  subMenuEl.textContent = "";
+  sublinkArr.forEach((ele) => {
+    let subLink = document.createElement("a");
+    subLink.setAttribute("href", ele.href);
+    subLink.innerHTML = ele.text;
+    subMenuEl.append(subLink);
+  });
+}
