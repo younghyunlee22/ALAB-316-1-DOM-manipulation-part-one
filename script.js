@@ -63,10 +63,10 @@ console.log("topMenuLinks", topMenuLinks);
 // delegating click event listener
 topMenuEl.addEventListener("click", function (e) {
   e.preventDefault();
-  console.log(e.target.textContent);
+  console.log("topMenuEl event", e.target.textContent);
 
   if (e.target.tagName !== "A") {
-    return console.log("Invalid element");
+    return;
   }
 
   for (const link of topMenuLinks) {
@@ -89,6 +89,7 @@ topMenuEl.addEventListener("click", function (e) {
     buildSubmenu(linkObj.subLinks);
   } else {
     subMenuEl.style.top = "0";
+    mainEl.innerHTML = `<h1>About</h1>`;
   }
 });
 
@@ -101,3 +102,19 @@ function buildSubmenu(sublinkArr) {
     subMenuEl.append(subLink);
   });
 }
+
+subMenuEl.addEventListener("click", function (e) {
+  e.preventDefault();
+  console.log("subMenu target:", e.target.textContent);
+  if (e.target.tagName !== "A") {
+    return;
+  }
+
+  subMenuEl.style.top = "0";
+
+  for (const link of topMenuLinks) {
+    link.classList.remove("active");
+  }
+
+  mainEl.innerHTML = `<h1>${e.target.textContent}</h1>`;
+});
